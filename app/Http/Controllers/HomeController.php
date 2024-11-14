@@ -2,29 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\TMDBService;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        return Inertia::render('Home', [
-            'featuredContent' => [
-                'title' => 'Stranger Things',
-                'description' => 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.',
-                'imageUrl' => '/images/hero.png',
-            ],
-            'categories' => [
-                [
-                    'id' => 1,
-                    'name' => 'Trending Now',
-                    'movies' => [
-                        ['id' => 1, 'title' => 'Movie 1', 'imageUrl' => '/images/hero.png'],
+    protected $tmdb;
 
-                    ],
-                ],
-            ],
+    public function __construct(TMDBService $tmdb)
+    {
+        $this->tmdb = $tmdb;
+    }
+
+    /**
+     * Menampilkan halaman Home dengan konten unggulan dan kategori film.
+     */
+    public function index(): Response
+    {
+        $featuredContent = $this->tmdb->getFeaturedContent();
+        $categories = $this->tmdb->getCategories();
+        // Tambahkan log untuk memeriksa data yang dikirim
+        Log::info('Featured Content:', $featuredContent ? [$featuredContent] : ['null']);
+        Log::info('Categories:', $categories);
+
+
+        return Inertia::render('Home', [
+            'featuredContent' => $featuredContent,
+            'categories' => $categories,
+            'searchResults' => [],
         ]);
     }
 }
