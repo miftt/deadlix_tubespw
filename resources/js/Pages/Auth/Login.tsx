@@ -96,7 +96,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     {/* Link ke halaman sign up */}
                     <div className="text-center text-gray-400">
                         Don't have an account?{" "}
-                        <Link href="/signup" className="text-red-500 hover:underline">
+                        <Link href="/register" className="text-red-500 hover:underline">
                             Sign Up
                         </Link>
                     </div>
