@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -15,7 +15,7 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', [HomeController::class, 'index'])->name('Welcome');
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -27,4 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 require __DIR__ . '/auth.php';
