@@ -1,5 +1,6 @@
 import { FormEventHandler, useState } from "react";
 import { Link, useForm } from "@inertiajs/react";
+import { FcGoogle } from "react-icons/fc";
 
 interface LoginProps {
     status?: string;
@@ -41,6 +42,25 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             <span className="text-green-500">{status}</span>
                         </div>
                     )}
+
+                    <div className="flex justify-center">
+                        <Link
+                            href={route('google.redirect')}
+                            className="flex items-center justify-center gap-2 w-full py-2 bg-white text-gray-800 font-semibold rounded-md hover:bg-gray-100 transition-colors"
+                        >
+                            <FcGoogle className="w-5 h-5" />
+                            Continue with Google
+                        </Link>
+                    </div>
+
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-600"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-2 text-gray-400 bg-black/60">Or continue with</span>
+                        </div>
+                    </div>
 
                     <form className="space-y-4" onSubmit={submit}>
                         {/* Input Email */}
