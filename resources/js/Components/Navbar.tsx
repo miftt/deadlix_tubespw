@@ -34,13 +34,13 @@ export default function Navbar({ user }: NavbarProps) {
                                 Home
                             </Link>
                             <Link
-                                href={route('movies')}
+                                href='/movies'
                                 className="text-white text-md hover:text-red-500 transition-colors px-2 py-2"
                             >
                                 Movies
                             </Link>
                             <Link
-                                href={route('watchlist')}
+                                href='/watchlist'
                                 className="text-white text-md hover:text-red-500 flex items-center space-x-1 transition-colors px-2 py-2"
                             >
                                 <BookmarkPlus size={18} />
@@ -133,10 +133,16 @@ export default function Navbar({ user }: NavbarProps) {
             {/* Responsive Navigation Menu */}
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                 <div className="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href={route('home')} active={route().current('home')}>
+                    {/* <ResponsiveNavLink href={route('home')} active={route().current('home')}>
                         Home
                     </ResponsiveNavLink>
-                    <ResponsiveNavLink href={route('movies')} active={route().current('movies')}>
+                    <ResponsiveNavLink href='/movies' active={route().current('movies')}>
+                        Movies
+                    </ResponsiveNavLink> */}
+                    <ResponsiveNavLink href='/home' >
+                        Home
+                    </ResponsiveNavLink>
+                    <ResponsiveNavLink href='/movies'>
                         Movies
                     </ResponsiveNavLink>
                 </div>
