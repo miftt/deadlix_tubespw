@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+import { Link, useForm } from '@inertiajs/react';
 import { PlayCircle } from 'lucide-react';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const {data, setData, post, reset } = useForm({
+        email: '',
+        password: '',
+    });
+    const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log('Login:', { email, password });
+        post(route('login'), {
+            onFinish: () => reset('password'),
+        });
     };
 
     return (
@@ -39,7 +42,7 @@ export default function Login() {
                             Sign in to your account
                         </h2>
                     </div>
-                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <form className="mt-8 space-y-6" onSubmit={submit}>
                         <div className="rounded-md space-y-4">
                             <div className="space-y-2">
                                 <label htmlFor="email" className="text-gray-200 text-sm font-medium">
@@ -52,8 +55,8 @@ export default function Login() {
                                     required
                                     className="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-gray-600 bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent focus:z-10 sm:text-sm"
                                     placeholder="Enter your email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -67,8 +70,8 @@ export default function Login() {
                                     required
                                     className="appearance-none rounded-lg relative block w-full px-3 py-2.5 border border-gray-600 bg-gray-800/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent focus:z-10 sm:text-sm"
                                     placeholder="Enter your password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
                                 />
                             </div>
                         </div>
