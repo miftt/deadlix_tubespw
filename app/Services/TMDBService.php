@@ -101,6 +101,46 @@ class TMDBService
         }
     }
 
+    public function getMovieCast($id)
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/movie/{$id}/credits");
+
+        if ($response->successful()) {
+            Log::info('Movie cast retrieved', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return $response->json();
+        } else {
+            Log::warning('Failed to fetch movie cast', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return null;
+        }
+    }
+
+    public function getMovieRecommendations($id)
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/movie/{$id}/recommendations");
+
+        if ($response->successful()) {
+            Log::info('Movie recommendations retrieved', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return $response->json()['results'] ?? [];
+        } else {
+            Log::warning('Failed to fetch movie recommendations', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return [];
+        }
+    }
+
     private function fetchMovies($endpoint)
     {
         try {
