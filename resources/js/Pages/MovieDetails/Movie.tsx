@@ -1,36 +1,57 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { X } from 'lucide-react'
-import { MovieDetails as MovieDetailsType, VideoResponse } from '@/types/moviedetails'
-import { Head, usePage } from '@inertiajs/react'
-import Navbar from '@/Components/Navbar'
-import LoadingMovie from '@/Components/LoadingMovie'
-import MovieHero from '@/Components/MovieDetails/MovieHero'
-
+import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+import { MovieDetails as MovieDetailsType } from "@/types/moviedetails";
+import { VideoResponse } from "@/types/moviedetails";
+import { Head, usePage } from "@inertiajs/react";
+import Navbar from "@/Components/Navbar";
+import LoadingMovie from "@/Components/LoadingMovie";
+import MovieHero from "@/Components/MovieDetails/MovieHero";
+import CastSection from "@/Components/MovieDetails/CastSection";
+import RecommendationsSection from "@/Components/MovieDetails/RecommendationsSection";
 
 interface Props {
-    movie: MovieDetailsType
-    trailer: VideoResponse
+    movie: MovieDetailsType;
+    trailer: VideoResponse;
+    cast: Array<{
+        id: number;
+        name: string;
+        character: string;
+        profile_path: string | null;
+    }>;
+    recommendations: Array<{
+        id: number;
+        title: string;
+        poster_path: string;
+        vote_average: number;
+    }>;
 }
 
-export default function Movie({ movie, trailer }: Props) {
-    const [showTrailer, setShowTrailer] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
-    const { auth } = usePage().props
+export default function Movie({
+    movie,
+    trailer,
+    cast,
+    recommendations,
+}: Props) {
+    const [showTrailer, setShowTrailer] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const { auth } = usePage().props;
 
     useEffect(() => {
-        if (movie && trailer) {
-            setIsLoading(false)
+        if (movie && trailer && cast) {
+            setIsLoading(false);
         }
-    }, [movie, trailer])
+    }, [movie, trailer, cast]);
 
-    if (!movie) return null
-    if (isLoading) return <LoadingMovie />
+    if (!movie) return null;
+    if (isLoading) return <LoadingMovie />;
 
     const trailerVideo = trailer.results.find(
-        (video) => video.site === "YouTube" && (video.type === "Trailer" || video.type === "Teaser")
-    )
+        (video) =>
+            video.site === "YouTube" &&
+            (video.type === "Trailer" || video.type === "Teaser")
+    );
 
     return (
         <>
@@ -46,11 +67,20 @@ export default function Movie({ movie, trailer }: Props) {
 
                 <div className="container mx-auto px-4 py-12">
                     <section className="mb-12">
-                        <h2 className="text-2xl font-bold text-white mb-4">Overview</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">
+                            Overview
+                        </h2>
                         <p className="text-gray-300 leading-relaxed max-w-3xl">
                             {movie.overview}
                         </p>
                     </section>
+
+                    {cast.length > 0 && <CastSection cast={cast} />}
+                    {recommendations.length > 0 && (
+                        <RecommendationsSection
+                            recommendations={recommendations}
+                        />
+                    )}
                 </div>
 
                 {showTrailer && trailerVideo && (
@@ -77,6 +107,5 @@ export default function Movie({ movie, trailer }: Props) {
                 )}
             </div>
         </>
-    )
+    );
 }
-
