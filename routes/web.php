@@ -31,6 +31,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('moviedetails.movie');
 
-Route::get('/watch/{id}', [WatchMovieController::class, 'index'])->name('watch.movie');
+Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
 
 require __DIR__ . '/auth.php';
