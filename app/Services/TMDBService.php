@@ -61,6 +61,38 @@ class TMDBService
         return $categories;
     }
 
+    public function getMovieDetails($id)
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/movie/{$id}");
+
+        Log::info('Movie details retrieved', [
+            'status' => $response->status(),
+            'body' => $response->body()
+        ]);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        return null;
+    }
+
+    public function getMovieTrailers($id)
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/movie/{$id}/videos");
+
+        Log::info('Movie trailers retrieved', [
+            'status' => $response->status(),
+            'body' => $response->body()
+        ]);
+        if ($response->successful()) {
+            return $response->json();
+        }
+        return null;
+    }
+
     private function fetchMovies($endpoint)
     {
         try {
