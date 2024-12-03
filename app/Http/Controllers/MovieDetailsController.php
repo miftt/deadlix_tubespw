@@ -19,10 +19,14 @@ class MovieDetailsController extends Controller
     {
         $movieDetails = $this->tmdbService->getMovieDetails($id);
         $trailerVideo = $this->tmdbService->getMovieTrailers($id);
+        $movieCredits = $this->tmdbService->getMovieCast($id);
+        $recommendations = $this->tmdbService->getMovieRecommendations($id);
 
         return Inertia::render('MovieDetails/Movie', [
             'movie' => $movieDetails,
-            'trailer' => $trailerVideo
+            'trailer' => $trailerVideo,
+            'cast' => $movieCredits['cast'] ?? [],
+            'recommendations' => array_slice($recommendations, 0, 12)
         ]);
     }
 }
