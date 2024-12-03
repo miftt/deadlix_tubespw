@@ -66,16 +66,19 @@ class TMDBService
         $response = Http::withToken($this->apiKey)
             ->get("{$this->baseUrl}/movie/{$id}");
 
-        Log::info('Movie details retrieved', [
-            'status' => $response->status(),
-            'body' => $response->body()
-        ]);
-
         if ($response->successful()) {
+            Log::info('Movie details retrieved', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
             return $response->json();
+        } else {
+            Log::warning('Failed to fetch movie details', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return null;
         }
-
-        return null;
     }
 
     public function getMovieTrailers($id)
@@ -83,14 +86,19 @@ class TMDBService
         $response = Http::withToken($this->apiKey)
             ->get("{$this->baseUrl}/movie/{$id}/videos");
 
-        Log::info('Movie trailers retrieved', [
-            'status' => $response->status(),
-            'body' => $response->body()
-        ]);
         if ($response->successful()) {
+            Log::info('Movie trailers retrieved', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
             return $response->json();
+        } else {
+            Log::warning('Failed to fetch movie trailers', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return null;
         }
-        return null;
     }
 
     private function fetchMovies($endpoint)
