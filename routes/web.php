@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MovieDetailsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WatchMovieController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,5 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('moviedetails.movie');
+
+Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
 
 require __DIR__ . '/auth.php';
