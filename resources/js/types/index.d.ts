@@ -2,7 +2,10 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    email_verified_at?: string;
+    role: string;
+    status: 'active' | 'inactive';
+    avatar?: string;
+    created_at: string;
 }
 
 export type PageProps<
