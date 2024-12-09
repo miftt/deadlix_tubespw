@@ -42,5 +42,6 @@ Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.u
 Route::get('/admin/movies', [AdminMovieController::class, 'index'])->name('admin.movies');
 Route::get('/admin/settings', [AdminSettingController::class, 'index'])->name('admin.settings');
 
+Route::post('admin', [AdminUserController::class, 'store'])->name('admin');
 
 require __DIR__ . '/auth.php';

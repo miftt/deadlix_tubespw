@@ -1,14 +1,18 @@
 import { useState } from 'react';
-import { users as initialUsers } from '@/Pages/Admin/data';
 import { UserTable } from '@/Components/dashboard/user-table';
 import { UserDialog } from '@/Pages/Admin/Dialog/UserDialog';
 import { Button } from '@/Components/ui/button';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { User } from '@/types';
 import { Head } from '@inertiajs/react';
+import { PageProps } from '@/types';
 
-export default function UsersPage() {
-    const [users, setUsers] = useState<User[]>(initialUsers);
+interface users{
+    users: any;
+}
+
+export default function UsersPage(user: users) {
+    const [users, setUsers] = useState<User[]>(user.users);
     const [selectedUser, setSelectedUser] = useState<User | undefined>();
     const [dialogOpen, setDialogOpen] = useState(false);
 
