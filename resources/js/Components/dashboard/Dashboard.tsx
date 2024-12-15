@@ -1,45 +1,22 @@
 import { UserStats } from '@/Components/dashboard/user-stats';
 import { UserChart } from '@/Components/dashboard/user-chart';
 import { LayoutDashboard } from 'lucide-react';
+import { User } from '@/types';
 
-export default function DashboardPage() {
-    const users = [
-        {
-            id: 1,
-            name: "John Doe",
-            email: "john@example.com",
-            role: "admin",
-            created_at: "2024-03-15T10:00:00.000Z"
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            email: "jane@example.com",
-            role: "user",
-            created_at: "2024-03-14T08:30:00.000Z"
-        },
-        {
-            id: 3,
-            name: "Bob Wilson",
-            email: "bob@example.com",
-            role: "user",
-            created_at: "2024-03-13T15:45:00.000Z"
-        },
-        {
-            id: 4,
-            name: "Alice Brown",
-            email: "alice@example.com",
-            role: "admin",
-            created_at: "2024-03-12T11:20:00.000Z"
-        },
-        {
-            id: 5,
-            name: "Charlie Davis",
-            email: "charlie@example.com",
-            role: "user",
-            created_at: "2024-03-11T09:15:00.000Z"
-        }
-    ];
+interface DashboardPageProps {
+    users: User[];
+}
+
+export default function DashboardPage({ users }: DashboardPageProps) {
+    const safeUsers = users || [];
+    
+    const adminPercentage = safeUsers.length > 0
+        ? Math.round((safeUsers.filter(u => u.role === 'admin').length / safeUsers.length) * 100)
+        : 0;
+    
+    const userPercentage = safeUsers.length > 0
+        ? Math.round((safeUsers.filter(u => u.role === 'user').length / safeUsers.length) * 100)
+        : 0;
 
     return (
         <div className="space-y-6">
@@ -57,7 +34,7 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            <UserStats users={users} />
+            <UserStats users={safeUsers} />
 
             <div className="grid gap-6 md:grid-cols-2">
                 <UserChart
@@ -72,11 +49,11 @@ export default function DashboardPage() {
                     data={[
                         {
                             name: 'Admin',
-                            percentage: Math.round((users.filter(u => u.role === 'admin').length / users.length) * 100)
+                            percentage: adminPercentage
                         },
                         {
                             name: 'Users',
-                            percentage: Math.round((users.filter(u => u.role === 'user').length / users.length) * 100)
+                            percentage: userPercentage
                         },
                     ]}
                 />

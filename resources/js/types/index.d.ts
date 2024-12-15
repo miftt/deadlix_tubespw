@@ -3,9 +3,11 @@ export interface User {
     name: string;
     email: string;
     role: string;
-    status: 'active' | 'inactive';
+    status: string;
     avatar?: string;
     created_at: string;
+    is_admin: boolean;
+    updated_at: string;
 }
 
 export type PageProps<

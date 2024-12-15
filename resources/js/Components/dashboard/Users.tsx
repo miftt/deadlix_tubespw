@@ -5,9 +5,7 @@ import { Button } from '@/Components/ui/button';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { User } from '@/types';
 import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
-
-interface users{
+interface users {
     users: any;
 }
 

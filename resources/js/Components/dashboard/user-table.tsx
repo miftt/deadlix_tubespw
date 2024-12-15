@@ -35,7 +35,11 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                             <th className="h-12 px-6 text-left align-middle font-medium text-gray-500 dark:text-gray-300">
                                 Created
                             </th>
+                            <th className="h-12 px-6 text-left align-middle font-medium text-gray-500 dark:text-gray-300">
+                                Updated at
+                            </th>
                             <th className="h-12 w-[80px] px-6 text-left align-middle font-medium text-gray-500 dark:text-gray-300">
+                                Action
                             </th>
                         </tr>
                     </thead>
@@ -43,13 +47,9 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                         {users.map((user, index) => (
                             <tr
                                 key={user.id}
-                                className={`
-                  border-b border-gray-200 transition-colors 
-                  hover:bg-gray-50 data-[state=selected]:bg-gray-100
-                  dark:border-gray-800 dark:hover:bg-gray-800/50 
-                  dark:data-[state=selected]:bg-gray-800
-                  ${index === users.length - 1 ? 'last:border-none' : ''}
-                `}
+                                className={`border-b border-gray-200 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/50 ${
+                                    index === users.length - 1 ? 'last:border-none' : ''
+                                }`}
                             >
                                 <td className="p-6">
                                     <div className="flex items-center gap-4">
@@ -71,30 +71,41 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                                 </td>
                                 <td className="p-6">
                                     <Badge
-                                        variant={user.role === 'admin' ? 'destructive' : 'secondary'}
-                                        className={`
-                      ${user.role === 'admin'
+                                        variant={
+                                            user.is_admin == true ? 'destructive' : 'secondary'
+                                        }
+                                        className={
+                                            user.is_admin == true
                                                 ? 'bg-red-500/10 text-red-500 hover:bg-red-500/20'
-                                                : 'bg-gray-500/10 text-gray-500 hover:bg-gray-500/20 dark:text-gray-400'}
-                    `}
+                                                : 'bg-gray-500/10 text-gray-500 hover:bg-gray-500/20 dark:text-gray-400'
+                                        }
                                     >
-                                        {user.role}
+                                        {user.is_admin == true ? 'Admin' : 'User'}
                                     </Badge>
                                 </td>
                                 <td className="p-6">
                                     <Badge
-                                        variant={user.status === 'active' ? 'default' : 'secondary'}
-                                        className={`
-                      ${user.status === 'active'
+                                        variant={
+                                            user.status === 'aktif' ? 'default' : 'error'
+                                        }
+                                        className={
+                                            user.status === 'aktif'
                                                 ? 'bg-green-500/10 text-green-500 hover:bg-green-500/20'
-                                                : 'bg-gray-500/10 text-gray-500 hover:bg-gray-500/20 dark:text-gray-400'}
-                    `}
+                                                : 'bg-red-500/10 text-red-500 hover:bg-red-500/20'
+                                        }
                                     >
                                         {user.status}
                                     </Badge>
                                 </td>
                                 <td className="p-6 text-gray-500 dark:text-gray-400">
                                     {new Date(user.created_at).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                    })}
+                                </td>
+                                <td className="p-6 text-gray-500 dark:text-gray-400">
+                                    {new Date(user.updated_at).toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: 'short',
                                         day: 'numeric',
@@ -112,7 +123,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent
                                             align="end"
-                                            className="w-40 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-800"
+                                            className="w-40 border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
                                         >
                                             <DropdownMenuItem
                                                 onClick={() => onEdit(user)}

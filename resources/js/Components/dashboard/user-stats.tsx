@@ -1,14 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Users, UserPlus, UserMinus } from "lucide-react";
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-    created_at: string;
-}
-
+import { User } from "@/types";
 interface UserStatsProps {
     users: User[];
 }

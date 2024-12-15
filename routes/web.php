@@ -8,6 +8,7 @@ use App\Http\Controllers\WatchMovieController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminMovieController;
 use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,18 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware(['auth', AdminMiddleware::class])->group(function () {
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+        Route::post('/users', [AdminUserController::class, 'store'])->name('user.store');
+        Route::put('/users/{id}', [AdminUserController::class, 'update'])->name('user.update');
+        Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('user.destroy');
+        Route::get('/movies', [AdminMovieController::class, 'index'])->name('movies');
+        Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings');
+    });
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -37,11 +50,8 @@ Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('movie
 
 Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users');
-Route::get('/admin/movies', [AdminMovieController::class, 'index'])->name('admin.movies');
-Route::get('/admin/settings', [AdminSettingController::class, 'index'])->name('admin.settings');
 
-Route::post('admin', [AdminUserController::class, 'store'])->name('admin');
+
+Route::get('get-csrf-token', [AdminUserController::class, 'getToken']);
 
 require __DIR__ . '/auth.php';
