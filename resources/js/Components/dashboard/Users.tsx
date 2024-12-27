@@ -5,6 +5,7 @@ import { Button } from '@/Components/ui/button';
 import { Plus, Users as UsersIcon } from 'lucide-react';
 import { User } from '@/types';
 import { Head } from '@inertiajs/react';
+
 interface users {
     users: any;
 }
@@ -13,6 +14,8 @@ export default function UsersPage(user: users) {
     const [users, setUsers] = useState<User[]>(user.users);
     const [selectedUser, setSelectedUser] = useState<User | undefined>();
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<number | null>(null);
 
     const handleSave = (userData: Partial<User>) => {
         if (selectedUser) {
@@ -31,6 +34,11 @@ export default function UsersPage(user: users) {
     };
 
     const handleDelete = (userId: number) => {
+        setUserToDelete(userId);
+        setDeleteDialogOpen(true);
+    };
+
+    const onDeleteSuccess = (userId: number) => {
         setUsers(users.filter((user) => user.id !== userId));
     };
 
@@ -79,6 +87,10 @@ export default function UsersPage(user: users) {
                             open={dialogOpen}
                             onOpenChange={setDialogOpen}
                             onSave={handleSave}
+                            deleteDialogOpen={deleteDialogOpen}
+                            onDeleteDialogChange={setDeleteDialogOpen}
+                            userToDelete={userToDelete}
+                            onDelete={onDeleteSuccess}
                         />
                     </div>
                 </div>

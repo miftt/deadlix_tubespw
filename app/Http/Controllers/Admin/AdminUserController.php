@@ -122,8 +122,29 @@ class AdminUserController extends Controller
         }
     }
 
-    public function getToken()
-    {
-        return response()->json(['token' => csrf_token()]);
+    public function destroy($id)
+{
+    try {
+        Log::info('Attempting to delete user', ['id' => $id]);
+        
+        $user = User::findOrFail($id);
+        if($user->id !== $id){
+            return redirect()->route('admin.users')->with('message', 'You are not allowed to delete this user');
+        }
+        $user->delete();
+        
+        Log::info('User deleted successfully', ['user_id' => $id]);
+        return redirect()->route('admin.users')
+            ->with('message', 'User deleted successfully');
+    } catch (\Exception $e) {
+        Log::error('Failed to delete user', [
+            'error' => $e->getMessage(),
+            'user_id' => $id,
+            'request' => request()->all()
+        ]);
+        return redirect()->route('admin.users')
+            ->with('error', 'Failed to delete user');
     }
+}
+
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminMovieController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,7 +29,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware([AdminMiddleware::class])->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/users', [AdminUserController::class, 'index'])->name('users');
@@ -50,8 +51,5 @@ Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('movie
 
 Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
 
-
-
-Route::get('get-csrf-token', [AdminUserController::class, 'getToken']);
 
 require __DIR__ . '/auth.php';
