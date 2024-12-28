@@ -171,4 +171,20 @@ class TMDBService
             return [];
         }
     }
+
+    public function searchMovies($query)
+    {
+        $response = Http::withToken($this->apiKey)
+                ->get("{$this->baseUrl}/search/movie", [
+                    'query' => $query,
+                    'include_adult' => false,
+                ]);
+
+            Log::info('Fetching search movies', [
+                'endpoint' => "{$this->baseUrl}/search/movie",
+                'status' => $response->status()
+            ]);
+
+        return $response->json();
+    }
 }
