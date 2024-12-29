@@ -223,4 +223,13 @@ class TMDBService
             return [];
         }
     }
+    public function getGenreMoviesByCategory($genreId)
+    {
+        return [
+            'popular' => $this->fetchMoviesByGenreAndCategory($genreId, 'popularity.desc'),
+            'top_rated' => $this->fetchMoviesByGenreAndCategory($genreId, 'vote_average.desc'),
+            'latest' => $this->fetchMoviesByGenreAndCategory($genreId, 'release_date.desc'),
+            'trending' => $this->getMoviesByGenre($genreId)
+        ];
+    }
 }
