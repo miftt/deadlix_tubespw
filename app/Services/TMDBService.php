@@ -191,5 +191,36 @@ class TMDBService
             ->get("{$this->baseUrl}/genre/movie/list");
         return $response->json()['genres'] ?? [];
     }
-
+    public function getMoviesByGenre($genreId)
+    {
+        try {
+            $response = Http::withToken($this->apiKey)
+                ->get("{$this->baseUrl}/discover/movie", [
+                    'with_genres' => $genreId,
+                    'sort_by' => 'popularity.desc',
+                    'page' => 1,
+                    'include_adult' => false,
+                    'language' => 'en-US'
+                ]);
+            Log::info('Fetching movies by genre', [
+                'genre_id' => $genreId,
+                'status' => $response->status()
+            ]);
+            if ($response->successful()) {
+                return $response->json()['results'] ?? [];
+            }
+            Log::warning('Failed to fetch movies by genre', [
+                'genre_id' => $genreId,
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return [];
+        } catch (\Exception $e) {
+            Log::error('Exception in getMoviesByGenre', [
+                'genre_id' => $genreId,
+                'message' => $e->getMessage()
+            ]);
+            return [];
+        }
+    }
 }
