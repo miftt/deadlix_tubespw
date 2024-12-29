@@ -187,4 +187,88 @@ class TMDBService
 
         return $response->json();
     }
+
+    public function getGenres()
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/genre/movie/list");
+
+        return $response->json()['genres'] ?? [];
+    }
+
+    public function getMoviesByGenre($genreId)
+    {
+        try {
+            $response = Http::withToken($this->apiKey)
+                ->get("{$this->baseUrl}/discover/movie", [
+                    'with_genres' => $genreId,
+                    'sort_by' => 'popularity.desc',
+                    'page' => 1,
+                    'include_adult' => false,
+                    'language' => 'en-US'
+                ]);
+
+            Log::info('Fetching movies by genre', [
+                'genre_id' => $genreId,
+                'status' => $response->status()
+            ]);
+
+            if ($response->successful()) {
+                return $response->json()['results'] ?? [];
+            }
+
+            Log::warning('Failed to fetch movies by genre', [
+                'genre_id' => $genreId,
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+
+            return [];
+        } catch (\Exception $e) {
+            Log::error('Exception in getMoviesByGenre', [
+                'genre_id' => $genreId,
+                'message' => $e->getMessage()
+            ]);
+            return [];
+        }
+    }
+
+    public function getGenreMoviesByCategory($genreId)
+    {
+        return [
+            'popular' => $this->fetchMoviesByGenreAndCategory($genreId, 'popularity.desc'),
+            'top_rated' => $this->fetchMoviesByGenreAndCategory($genreId, 'vote_average.desc'),
+            'latest' => $this->fetchMoviesByGenreAndCategory($genreId, 'release_date.desc'),
+            'trending' => $this->getMoviesByGenre($genreId)
+        ];
+    }
+
+    private function fetchMoviesByGenreAndCategory($genreId, $sortBy)
+    {
+        try {
+            $response = Http::withToken($this->apiKey)
+                ->get("{$this->baseUrl}/discover/movie", [
+                    'with_genres' => $genreId,
+                    'sort_by' => $sortBy,
+                    'page' => 1,
+                    'include_adult' => false,
+                    'language' => 'en-US',
+                    'vote_count.gte' => 100
+                ]);
+
+            if ($response->successful()) {
+                return $response->json()['results'] ?? [];
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            Log::error('Exception in fetchMoviesByGenreAndCategory', [
+                'genre_id' => $genreId,
+                'sort_by' => $sortBy,
+                'message' => $e->getMessage()
+            ]);
+            return [];
+        }
+    }
+
 }

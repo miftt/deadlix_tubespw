@@ -76,7 +76,7 @@ export default function Navbar({ user }: NavbarProps) {
                         {/* Navigation Links */}
                         <div className="hidden md:flex ml-8 space-x-4">
                             <Link
-                                href={route('home')}
+                                href='/'
                                 className="text-gray-300 text-sm font-medium hover:text-white transition-colors px-3 py-2"
                             >
                                 Home
@@ -233,7 +233,7 @@ export default function Navbar({ user }: NavbarProps) {
             {/* Mobile Menu */}
             <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                 <div className="pt-2 pb-3 space-y-1">
-                    <ResponsiveNavLink href='/home'>
+                    <ResponsiveNavLink href='/'>
                         Home
                     </ResponsiveNavLink>
                     <ResponsiveNavLink href='/movies'>

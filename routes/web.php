@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MovieDetailsController;
+use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WatchMovieController;
 use App\Http\Controllers\MovieSearchController;
@@ -36,4 +37,6 @@ Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.m
 
 Route::get('/api/movies/search', [MovieSearchController::class, 'search'])->name('movies.search');
 
+Route::get('/movies', [MovieGenreController::class, 'index'])->name('movies.index');
+Route::get('/movies/genre/{id}', [MovieGenreController::class, 'show'])->name('movies.genre.show');
 require __DIR__ . '/auth.php';
