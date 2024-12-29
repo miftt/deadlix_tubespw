@@ -33,4 +33,6 @@ Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('movie
 
 Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
 
+Route::get('/api/movies/search', [MovieSearchController::class, 'search'])->name('movies.search');
+
 require __DIR__ . '/auth.php';
