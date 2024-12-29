@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MovieDetailsController;
+use App\Http\Controllers\MovieSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WatchMovieController;
 use Illuminate\Foundation\Application;
