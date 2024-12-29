@@ -185,4 +185,11 @@ class TMDBService
             ]);
         return $response->json();
     }
+    public function getGenres()
+    {
+        $response = Http::withToken($this->apiKey)
+            ->get("{$this->baseUrl}/genre/movie/list");
+        return $response->json()['genres'] ?? [];
+    }
+
 }
