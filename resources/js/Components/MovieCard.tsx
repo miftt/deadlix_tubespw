@@ -1,6 +1,7 @@
 import { Star } from 'lucide-react';
 import { Movie } from '../types/movie';
 import { Link } from "@inertiajs/react"
+import WatchlistButton from './WatchlistButton';
 
 interface MovieCardProps {
     movie: Movie;
@@ -22,6 +23,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
                             <Star className="text-yellow-400" size={16} />
                             <span className="text-white">{movie.vote_average.toFixed(1)}</span>
                         </div>
+                    </div>
+                    <div className="absolute bottom-2 right-2">
+                        <WatchlistButton movieId={movie.id} />
                     </div>
                 </div>
             </div>

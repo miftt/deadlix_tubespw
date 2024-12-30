@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MovieDetailsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WatchMovieController;
+use App\Http\Controllers\WatchlistController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,5 +33,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/movie/{id}', [MovieDetailsController::class, 'index'])->name('moviedetails.movie');
 
 Route::get('/watch/{id}', [WatchMovieController::class, 'watch'])->name('watch.movie');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/watchlist', [WatchlistController::class, 'index'])->name('watchlist');
+    Route::post('/watchlist/toggle', [WatchlistController::class, 'toggle'])->name('watchlist.toggle');
+    Route::get('/watchlist/check/{movie_id}', [WatchlistController::class, 'check'])->name('watchlist.check');
+});
 
 require __DIR__ . '/auth.php';

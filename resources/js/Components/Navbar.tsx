@@ -40,11 +40,10 @@ export default function Navbar({ user }: NavbarProps) {
                                 Movies
                             </Link>
                             <Link
-                                href='/watchlist'
-                                className="text-white text-md hover:text-red-500 flex items-center space-x-1 transition-colors px-2 py-2"
+                                href={route('watchlist')}
+                                className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                             >
-                                <BookmarkPlus size={18} />
-                                Watchlist
+                                My Watchlist
                             </Link>
                         </div>
                     </div>
