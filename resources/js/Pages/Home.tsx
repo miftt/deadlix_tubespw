@@ -52,7 +52,7 @@ export default function Home({ categories }: categoriesProps) {
                 <meta name="description" content="Watch your favorite movies" />
             </Head>
 
-            <div className="min-h-screen bg-gray-900 pt-16">
+            <div className="min-h-screen bg-[#141414] pt-16">
                 <Navbar user={auth.user} />
 
                 {/* Hero Section */}
@@ -65,15 +65,15 @@ export default function Home({ categories }: categoriesProps) {
                     />
                 )}
 
-                <div className="container mx-auto px-4 -mt-32 relative z-10">
+            <div className="relative px-[4%] pb-20 -mt-32">
                     {trendingMovies.length > 0 && (
-                        <MovieGrid title="Trending Now" movies={trendingMovies.slice(0, 10)} />
+                        <MovieGrid title="Trending Now" movies={trendingMovies} />
                     )}
                     {popularMovies.length > 0 && (
-                        <MovieGrid title="Popular Movies" movies={popularMovies.slice(0, 10)} />
+                        <MovieGrid title="Popular Movies" movies={popularMovies} />
                     )}
                     {topRatedMovies.length > 0 && (
-                        <MovieGrid title="Top Rated Movies" movies={topRatedMovies.slice(0, 10)} />
+                            <MovieGrid title="Top Rated Movies" movies={topRatedMovies} />
                     )}
 
                 </div>
