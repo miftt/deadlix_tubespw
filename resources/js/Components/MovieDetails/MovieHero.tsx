@@ -1,4 +1,4 @@
-import { Play } from 'lucide-react'
+import { Check, Play, Plus } from 'lucide-react'
 import { Link } from '@inertiajs/react'
 import { MovieDetails } from '@/types/moviedetails'
 import QuickInfo from '@/Components/MovieDetails/QuickInfo'
@@ -7,9 +7,12 @@ interface MovieHeroProps {
     movie: MovieDetails
     onWatchTrailer: () => void
     hasTrailer: boolean
+    hasWatchlist: boolean
+    onAddToWatchlist: (movie: MovieDetails) => void
+    onRemoveFromWatchlist: (movie: MovieDetails) => void
 }
 
-export default function MovieHero({ movie, onWatchTrailer, hasTrailer }: MovieHeroProps) {
+export default function MovieHero({ movie, onWatchTrailer, hasTrailer, hasWatchlist, onAddToWatchlist, onRemoveFromWatchlist }: MovieHeroProps) {
     return (
         <div className="relative h-[85vh]">
             <div className="absolute inset-0">
@@ -64,10 +67,27 @@ export default function MovieHero({ movie, onWatchTrailer, hasTrailer }: MovieHe
                                 <Play className="w-5 h-5" />
                                 <span className="font-medium">Play Movie</span>
                             </Link>
+                            {hasWatchlist ? (
+                                <button
+                                    onClick={() => onRemoveFromWatchlist(movie)}
+                                    className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg transition"
+                                >
+                                    <Check className="w-5 h-5" />
+                                    <span className="font-medium">Remove from Watchlist</span>
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => onAddToWatchlist(movie)}
+                                    className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg transition"
+                            >
+                                <Plus className="w-5 h-5" />
+                                <span className="font-medium">Add to Watchlist</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     )
-}
+}   
