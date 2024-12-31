@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { MovieDetails as MovieDetailsType } from "@/types/moviedetails";
 import { VideoResponse } from "@/types/moviedetails";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import Navbar from "@/Components/Navbar";
 import LoadingMovie from "@/Components/LoadingMovie";
 import MovieHero from "@/Components/MovieDetails/MovieHero";
 import CastSection from "@/Components/MovieDetails/CastSection";
 import RecommendationsSection from "@/Components/MovieDetails/RecommendationsSection";
+import axios from "axios";
 
 interface Props {
     movie: MovieDetailsType;
@@ -35,12 +36,25 @@ export default function Movie({
     recommendations,
 }: Props) {
     const [showTrailer, setShowTrailer] = useState(false);
+    const [watchlist, setWatchlist] = useState<Array<MovieDetailsType>>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { auth } = usePage().props;
 
     useEffect(() => {
         if (movie && trailer && cast) {
             setIsLoading(false);
+        }
+        const fetchWatchlist = async () => {
+            try {
+                const response = await axios.get('/api/watchlist');
+                setWatchlist(response.data.watchlist);
+                console.log('watchlist', response.data);
+            } catch (error) {
+                console.error('Error fetching watchlist:', error);
+            }
+        };
+        if (auth.user) {
+            fetchWatchlist();
         }
     }, [movie, trailer, cast]);
 
@@ -53,6 +67,34 @@ export default function Movie({
             (video.type === "Trailer" || video.type === "Teaser")
     );
 
+    const handleAddToWatchlist = async (movie: MovieDetailsType) => {
+        try{
+            if (auth.user) {
+                const response = await axios.post(`/watchlist/handle`, { movie_id: movie.id });
+                console.log('response', response);
+                setWatchlist([...watchlist, movie]);
+            } else {
+                router.visit('/login');
+            }
+        } catch (error) {
+            console.error('Error adding to watchlist:', error);
+        }
+    };
+
+    const handleRemoveFromWatchlist = async (movie: MovieDetailsType) => {
+        try{
+            if (auth.user) {
+                const response = await axios.post(`/watchlist/handle`, { movie_id: movie.id });
+                console.log('response', response);
+                setWatchlist(watchlist.filter((m) => m.id !== movie.id));
+            } else {
+                router.visit('/login');
+            }
+        } catch (error) {
+            console.error('Error removing from watchlist:', error);
+        }
+    };
+
     return (
         <>
             <Head title={movie.title} />
@@ -63,6 +105,9 @@ export default function Movie({
                     movie={movie}
                     onWatchTrailer={() => setShowTrailer(true)}
                     hasTrailer={!!trailerVideo}
+                    hasWatchlist={watchlist.some(m => m.id === movie.id)}
+                    onAddToWatchlist={handleAddToWatchlist}
+                    onRemoveFromWatchlist={handleRemoveFromWatchlist}
                 />
 
                 <div className="container mx-auto px-4 py-12">
@@ -104,7 +149,7 @@ export default function Movie({
                             </div>
                         </div>
                     </div>
-                )}
+                )}                
             </div>
         </>
     );

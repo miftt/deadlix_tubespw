@@ -5,6 +5,7 @@ use App\Http\Controllers\MovieDetailsController;
 use App\Http\Controllers\MovieGenreController;
 use App\Http\Controllers\MovieSearchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WatchlistController;
 use App\Http\Controllers\WatchMovieController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,11 @@ Route::get('/api/movies/search', [MovieSearchController::class, 'search'])->name
 
 Route::get('/movies', [MovieGenreController::class, 'index'])->name('movies.index');
 Route::get('/movies/genre/{id}', [MovieGenreController::class, 'show'])->name('movies.genre.show');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/watchlist', [WatchlistController::class, 'index'])->name('watchlist.index');
+    Route::get('/api/watchlist', [WatchlistController::class, 'show'])->name('watchlist.show');
+    Route::post('/watchlist/handle', [WatchlistController::class, 'handleWatchlist'])->name('watchlist.handle');
+});
+
 require __DIR__ . '/auth.php';
