@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { MovieDetails } from '@/types/moviedetails';
 import LoadingSpinner from '@/Components/LoadingSpinner';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import AdOverlay from '@/Components/Ads/AdOverlay';
+import Navbar from '@/Components/Navbar';
 
 interface Props {
     movie: MovieDetails
 }
 
 export default function WatchMovie({ movie }: Props) {
-    // const [isLoading, setIsLoading] = useState(true);
+    const auth = usePage().props.auth;
     const [error, setError] = useState<string | null>(null);
-
+    const [showVideo, setShowVideo] = useState(false);
+    const isPremium = auth.user?.is_premium;
+    const [showAd, setShowAd] = useState(true); // Mulai dengan menampilkan iklan
+    useEffect(() => {
+        if (isPremium) {
+            setShowAd(false);
+            setShowVideo(true);
+        } else {
+            setShowAd(true);
+        }
+    }, [isPremium]);
 
     if (error) return (
         <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -30,6 +42,7 @@ export default function WatchMovie({ movie }: Props) {
     return (
         <>
             <Head title={movie.title} />
+            <Navbar user={auth.user} />
             <div className="min-h-screen bg-black">
                 {/* Header */}
                 <div className="fixed top-0 left-0 right-0 bg-gray-900 z-10">
@@ -51,28 +64,41 @@ export default function WatchMovie({ movie }: Props) {
 
                 {/* Video Player Container */}
                 <div className="w-full h-screen pt-16">
-                    {/* {isLoading ? (
-                    <div className="h-full flex items-center justify-center">
-                        <LoadingSpinner />
-                    </div>
-                ) : ( */}
-                    <div className="relative w-full h-full">
-                        <iframe
-                            src={`https://moviesapi.club/movie/${movie.id}`}
-                            className="absolute top-0 left-0 w-full h-full"
-                            frameBorder="0"
-                            allowFullScreen
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
+                    {showAd ? (
+                        <AdOverlay
+                            onClose={() => {
+                                setShowAd(false);
+                                setShowVideo(false);
+                                router.visit(`/movie/${movie.id}`);
                             }}
+                            onFinish={() => {
+                                setShowAd(false);
+                                setShowVideo(true);
+                            }}
+                            duration={10} // Durasi iklan lebih lama untuk halaman menonton
                         />
-                    </div>
-                    {/* )} */}
+                    ) : showVideo || isPremium ? (
+                        <div className="relative w-full h-full">
+                            <iframe
+                                src={`https://moviesapi.club/movie/${movie.id}`}
+                                className="absolute top-0 left-0 w-full h-full"
+                                frameBorder="0"
+                                allowFullScreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                            />
+                        </div>
+                    ) : (
+                        <div className="h-full flex items-center justify-center">
+                            <LoadingSpinner />
+                        </div>
+                    )}
                 </div>
             </div>
         </>
