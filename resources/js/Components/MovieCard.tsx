@@ -19,8 +19,9 @@ export default function MovieCard({ movie, type, onRemove }: MovieCardProps) {
                         alt={movie.title}
                         className="w-full h-[400px] object-cover transform group-hover/item:scale-105 transition duration-300"
                     />
+                    <div className="tes12333">testes</div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity">
-                        <div className="absolute bottom-0 p-4 w-full">
+                        <div className="absolute bottom-0 p-4 w-full">tes1233
                             <h3 className="text-white text-lg font-semibold mb-2">{movie.title}</h3>
                             <div className="flex items-center space-x-2">
                                 <Star className="text-yellow-400" size={16} />
