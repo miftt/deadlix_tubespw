@@ -17,7 +17,7 @@ export default function Hero({ id, title, overview, backdropPath }: HeroProps) {
                     alt={title}
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/80" />
             </div>
 
             <div className="relative h-full container mx-auto px-4 flex items-center">
