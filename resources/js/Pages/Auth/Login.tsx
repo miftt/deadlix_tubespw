@@ -4,7 +4,7 @@ import { PlayCircle } from 'lucide-react';
 import InputError from '@/Components/InputError';
 
 export default function Login() {
-    const {data, setData, post, reset, processing, errors } = useForm({
+    const { data, setData, post, reset, processing, errors } = useForm({
         email: '',
         password: '',
     });
@@ -13,6 +13,10 @@ export default function Login() {
         post(route('login'), {
             onFinish: () => reset('password'),
         });
+    };
+
+    const handleGoogleLogin = () => {
+        window.location.href = route('google.redirect');
     };
 
     return (
@@ -59,7 +63,7 @@ export default function Login() {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                 />
-                                <InputError message={errors.email} className='mt-2'/>
+                                <InputError message={errors.email} className='mt-2' />
                             </div>
                             <div className="space-y-2">
                                 <label htmlFor="password" className="text-gray-200 text-sm font-medium">
@@ -75,7 +79,7 @@ export default function Login() {
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
                                 />
-                                <InputError message={errors.password} className='mt-2'/>
+                                <InputError message={errors.password} className='mt-2' />
                             </div>
                         </div>
 
@@ -86,6 +90,30 @@ export default function Login() {
                                 className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
                             >
                                 Sign in
+                            </button>
+                        </div>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-600"></div>
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-black/80 text-gray-400">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                type="button"
+                                onClick={handleGoogleLogin}
+                                className="w-full flex items-center justify-center gap-2 bg-white text-gray-900 hover:bg-gray-100 py-2.5 px-4 rounded-lg font-medium transition-colors duration-200"
+                            >
+                                <img
+                                    src="/images/google.svg"
+                                    alt="Google"
+                                    className="w-5 h-5"
+                                />
+                                Sign in with Google
                             </button>
                         </div>
                     </form>

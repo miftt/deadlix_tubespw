@@ -1,43 +1,61 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
-import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import React from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import Navbar from '@/Components/Navbar';
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import UpdateProfileForm from '@/Pages/Profile/Partials/UpdateProfileForm';
+import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
+import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm';
+import UpdateProfilePhotoForm from '@/Pages/Profile/Partials/UpdateProfilePhotoForm';
 
-export default function Edit({
-    mustVerifyEmail,
-    status,
-}: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+export default function Edit() {
+    const { auth } = usePage().props;
+
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+        <>
+            <Navbar user={auth.user} />
+            <Head title="Edit Profile" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <UpdateProfileInformationForm
-                            mustVerifyEmail={mustVerifyEmail}
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 mt-16">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-bold">Profile Photo</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <UpdateProfilePhotoForm user={auth.user} />
+                            </CardContent>
+                        </Card>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-bold">Update Profile</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <UpdateProfileForm user={auth.user} />
+                            </CardContent>
+                        </Card>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <DeleteUserForm className="max-w-xl" />
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-bold">Update Password</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <UpdatePasswordForm />
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-2xl font-bold">Delete Account</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <DeleteUserForm />
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
