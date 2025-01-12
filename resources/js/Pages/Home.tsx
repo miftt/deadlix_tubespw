@@ -48,7 +48,7 @@ export default function Home({ categories }: categoriesProps) {
     return (
         <>
             <Head>
-                <title>Deadflix - Home</title>
+                <title>Home</title>
                 <meta name="description" content="Watch your favorite movies" />
             </Head>
 

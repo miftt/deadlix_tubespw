@@ -40,7 +40,7 @@ export default function Register() {
                     <div className="flex justify-center mb-8">
                         <Link href="/" className="flex items-center">
                             <PlayCircle size={32} className="mr-1 text-red-500" />
-                            <span className="text-white text-xl font-bold">Deadflix</span>
+                            <span className="text-white text-xl font-bold">Deadlix</span>
                         </Link>
                     </div>
                     <div>
