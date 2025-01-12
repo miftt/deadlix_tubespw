@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TmdbService;
+use App\Services\TMDBService;
 use Inertia\Inertia;
 
 class WatchMovieController extends Controller
