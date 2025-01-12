@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\TmdbService;
+use App\Services\TMDBService;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
