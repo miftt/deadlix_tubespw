@@ -10,7 +10,7 @@ interface Props {
 
 export default function UpdateProfilePhotoForm({ user }: Props) {
     const [photoPreview, setPhotoPreview] = useState<string | null>(() => {
-        if (user.profile_photo_url && user.profile_photo_url !== '/default-avatar.png') {
+        if (user.profile_photo_url && user.profile_photo_url !== '/images/unknown-person.png') {
             return user.profile_photo_url;
         }
         return null;
@@ -69,7 +69,7 @@ export default function UpdateProfilePhotoForm({ user }: Props) {
                                 />
                             ) : (
                                 <img
-                                    src={user.profile_photo_url || '/default-avatar.png'}
+                                    src={user.profile_photo_url || '/images/unknown-person.png'}
                                     alt="Current profile photo"
                                     className="h-full w-full object-cover"
                                 />

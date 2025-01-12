@@ -25,7 +25,7 @@ export default function Register() {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0">
                 <img
-                    src="/images/registerbg.Png"
+                    src="/images/registerbg.PNG"
                     alt="Background"
                     className="w-full h-full object-cover zoom-in-125"
                 />

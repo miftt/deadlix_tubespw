@@ -24,7 +24,7 @@ export default function Login() {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0">
                 <img
-                    src="/images/loginbg.Png"
+                    src="/images/loginbg.PNG"
                     alt="Background"
                     className="w-full h-full object-cover zoom-in-125"
                 />
